@@ -8,7 +8,6 @@ app.listen(8080, () => {
 	console.log("El servidor está inicializado en el puerto 8080");
 });
 
-// Test
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('*', function (req, res) {
