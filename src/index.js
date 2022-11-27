@@ -1,16 +1,30 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const formidable = require('express-formidable');
+const formData = require('express-form-data');
+const multer = require('multer');
 
 
+function wait(time) {
+	return new Promise(resolve => setTimeout(resolve, time));
+}
 
+const port = 8443;
 const app = express();
-app.listen(8080, () => {
-	console.log("El servidor está inicializado en el puerto 8080");
+app.listen(port, () => {
+	console.log("El servidor está inicializado en el puerto "+port);
 });
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use('*', function (req, res) {
+app.use(cors());
+//app.use(formData.parse());
+//app.use(formidable());
+app.use(multer().array());
+app.use(bodyParser());
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded());
+//app.use(bodyParser.urlencoded({ extended: false }));
+app.use('*', async function (req, res) {
 	console.log("===============");
 	console.log(req.originalUrl);
 	console.log(req.headers);
@@ -19,5 +33,11 @@ app.use('*', function (req, res) {
 	console.log(req.method);
 	console.log("---------------");
 
-	res.send('Saludos desde express q tal');
+	await wait(1000);
+
+	res.set('Content-Type', 'application/json');
+	res.send({
+		msg: "ok",
+		time: Date.now()
+	});
 });
