@@ -67,23 +67,28 @@ app.use(express.urlencoded({ extended: false }));
 app.use('*', async function (req, res) {
 	console.log("===============");
 	console.log("IP: "+req.ip.substring(req.ip.lastIndexOf(":")+1));
-	console.log("req.originalUrl");
+	console.log("originalUrl");
 	console.log(req.originalUrl);
-	console.log("req.headers");
+	console.log("headers");
 	console.log(req.headers);
-	console.log("req.body");
+	console.log("body");
 	console.log(req.body);
-	console.log("req.query");
+	console.log("query");
 	console.log(req.query);
-	console.log("req.cookies");
+	console.log("cookies");
 	console.log(req.cookies);
-	console.log("req.method");
+	console.log("method");
 	console.log(req.method);
 	console.log("---------------");
 
-	await wait(1000);
+	await wait(500);
 
 	res.set('Content-Type', 'application/json');
+	res.cookie('token', session.token, {
+			httpOnly: true,
+			sameSite: 'none',
+			maxAge: 30 * 24 * 3600000
+		});
 	res.send({
 		msg: "ok",
 		time: Date.now()
