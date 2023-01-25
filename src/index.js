@@ -9,6 +9,42 @@ function wait(time) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }
 
+function bodyparser() {
+	return async function(req, res, next){
+		var data = "";
+		req.body = {};
+		req.on('data', chunk => data += chunk);
+		req.on('end', function() {
+			req.bodyraw = data;
+			req.body = {};
+			try {
+				// Parsear tambien:
+				// multipart/form-data
+				// application/x-www-form-urlencoded
+				req.body = JSON.parse(data);
+			} catch (error) {
+				try {
+					for(const [key, value] of (new URLSearchParams(data)))
+						req.body[key] = value;
+				} catch (error) {
+					req.body = { data };
+				}
+			}
+			next();
+		});
+	 };
+}
+
+function cookieparser(ops={}) {
+	return function(req, res, next){
+		req.cookies = req.headers.hasOwnProperty("cookie") ? req.headers.cookie.split(';').reduce((res, item) => {
+			const data = item.trim().split('=');
+			return { ...res, [data[0]]: data[1] };
+		}, {}) : {};
+		next();
+	 };
+}
+
 const port = 8443;
 const app = express();
 app.listen(port, () => {
@@ -16,6 +52,7 @@ app.listen(port, () => {
 });
 
 app.use(cors());
+app.use(cookieparser());
 //app.use(formData.parse());
 //app.use(formidable());
 //app.use(multer().array());
