@@ -66,7 +66,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('*', async function (req, res) {
 	console.log("===============");
-	console.log("IP :"+req.ip.substring(req.ip.lastIndexOf(":")+1));
+	console.log("IP: "+req.ip.substring(req.ip.lastIndexOf(":")+1));
 	console.log("req.originalUrl");
 	console.log(req.originalUrl);
 	console.log("req.headers");
