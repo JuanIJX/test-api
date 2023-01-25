@@ -63,10 +63,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('*', async function (req, res) {
 	console.log("===============");
+	console.log("req.originalUrl");
 	console.log(req.originalUrl);
+	console.log("req.headers");
 	console.log(req.headers);
+	console.log("req.body");
 	console.log(req.body);
+	console.log("req.query");
 	console.log(req.query);
+	console.log("req.cookies");
+	console.log(req.cookies);
+	console.log("req.method");
 	console.log(req.method);
 	console.log("---------------");
 
