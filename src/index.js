@@ -51,7 +51,9 @@ app.listen(port, () => {
 	console.log("El servidor está inicializado en el puerto "+port);
 });
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://m1.ijx.es'
+}));
 app.use(cookieparser());
 //app.use(formData.parse());
 //app.use(formidable());
