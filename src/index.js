@@ -52,7 +52,8 @@ app.listen(port, () => {
 });
 
 app.use(cors({
-  origin: 'http://m1.ijx.es'
+  //credentials: true,
+  origin: '*'
 }));
 app.use(cookieparser());
 //app.use(formData.parse());
@@ -65,6 +66,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('*', async function (req, res) {
 	console.log("===============");
+	console.log("IP :"+req.ip.substring(req.ip.lastIndexOf(":")+1));
 	console.log("req.originalUrl");
 	console.log(req.originalUrl);
 	console.log("req.headers");
