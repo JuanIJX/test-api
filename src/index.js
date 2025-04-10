@@ -45,52 +45,60 @@ function cookieparser(ops={}) {
 	 };
 }
 
+
+
 const port = 8443;
 const app = express();
-app.listen(port, () => {
-	console.log("El servidor está inicializado en el puerto "+port);
-});
 
-app.use(cors({
-  //credentials: true,
-  origin: '*'
-}));
-app.use(cookieparser());
-//app.use(formData.parse());
-//app.use(formidable());
-//app.use(multer().array());
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded());
-//app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use('*', async function (req, res) {
-	console.log("===============");
-	console.log("IP: "+req.ip.substring(req.ip.lastIndexOf(":")+1));
-	console.log("originalUrl");
-	console.log(req.originalUrl);
-	console.log("headers");
-	console.log(req.headers);
-	console.log("body");
-	console.log(req.body);
-	console.log("query");
-	console.log(req.query);
-	console.log("cookies");
-	console.log(req.cookies);
-	console.log("method");
-	console.log(req.method);
-	console.log("---------------");
-
-	await wait(500);
-
-	res.set('Content-Type', 'application/json');
-	res.cookie('token', session.token, {
-			httpOnly: true,
-			sameSite: 'none',
-			maxAge: 30 * 24 * 3600000
-		});
-	res.send({
-		msg: "ok",
-		time: Date.now()
+(async () => {
+	//console.log("El servidor está inicializado en el puerto "+port);
+	app.listen(port, () => {
+		console.log("El servidor está inicializado en el puerto "+port);
 	});
-});
+
+	app.use(cors({
+	//credentials: true,
+	origin: '*'
+	}));
+	app.use(cookieparser());
+	//app.use(formData.parse());
+	//app.use(formidable());
+	//app.use(multer().array());
+	//app.use(bodyParser.json());
+	//app.use(bodyParser.urlencoded());
+	//app.use(bodyParser.urlencoded({ extended: false }));
+	app.use(express.json());
+	app.use(express.urlencoded({ extended: false }));
+	app.use('*', async function (req, res) {
+		console.log("===============");
+		console.log("IP: "+req.ip.substring(req.ip.lastIndexOf(":")+1));
+		console.log("originalUrl");
+		console.log(req.originalUrl);
+		console.log("headers");
+		console.log(req.headers);
+		console.log("body");
+		console.log(req.body);
+		console.log("query");
+		console.log(req.query);
+		console.log("cookies");
+		console.log(req.cookies);
+		console.log("method");
+		console.log(req.method);
+		console.log("---------------");
+
+		await wait(500);
+
+		/*res.set('Content-Type', 'application/json');
+		res.cookie('token', session.token, {
+				httpOnly: true,
+				sameSite: 'none',
+				maxAge: 30 * 24 * 3600000
+			});*/
+		res.send({
+			msg: "ok",
+			time: Date.now()
+		});
+	});
+
+	
+})();
