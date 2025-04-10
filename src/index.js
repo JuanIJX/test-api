@@ -3,6 +3,7 @@ const cors = require("cors");
 //const formidable = require('express-formidable');
 //const formData = require('express-form-data');
 const multer = require('multer');
+const { default: KeyB } = require("@ijx/keyb");
 
 
 function wait(time) {
@@ -45,20 +46,30 @@ function cookieparser(ops={}) {
 	 };
 }
 
+const comandos = (cadena, cmdName, args) => {
+	console.log("CMD: " + cmdName);
+	
+	try {
+		switch (cmdName) {
+			case "a":
+				break;
+			default:
+				break;
+		}
+	} catch (error) {
+		console.log("Error en el bucle de comandos: "+error);
+	}
+};
+
 
 
 const port = 8443;
 const app = express();
 
 (async () => {
-	//console.log("El servidor está inicializado en el puerto "+port);
-	app.listen(port, () => {
-		console.log("El servidor está inicializado en el puerto "+port);
-	});
-
 	app.use(cors({
-	//credentials: true,
-	origin: '*'
+		//credentials: true,
+		origin: '*'
 	}));
 	app.use(cookieparser());
 	//app.use(formData.parse());
@@ -70,21 +81,39 @@ const app = express();
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: false }));
 	app.use('*', async function (req, res) {
-		console.log("===============");
-		console.log("IP: "+req.ip.substring(req.ip.lastIndexOf(":")+1));
-		console.log("originalUrl");
-		console.log(req.originalUrl);
-		console.log("headers");
+		console.log("======================================================================");
+		console.log("======================================================================");
+		console.log("req.ip: "+req.ip.substring(req.ip.lastIndexOf(":")+1));
+		console.log(`req.originalUrl: ${req.originalUrl}`);
+		console.log(`req.hostname: ${req.hostname}`);
+		console.log(`req.path: ${req.path}`);
+		console.log(`req.protocol: ${req.protocol}`);
+		console.log(`req.secure: ${req.secure}`);
+		console.log(`req.xhr: ${req.xhr}`);
+		console.log(`req.method: ${req.method}`);
+		console.log(`req.baseUrl: "${req.baseUrl}"`);
+		console.log(`req.headers:`);
 		console.log(req.headers);
-		console.log("body");
+		console.log(`req.body:`);
 		console.log(req.body);
-		console.log("query");
+		console.log(`req.query:`);
 		console.log(req.query);
-		console.log("cookies");
+		console.log(`req.params:`);
+		console.log(req.params);
+		console.log(`req.cookies:`);
 		console.log(req.cookies);
-		console.log("method");
-		console.log(req.method);
-		console.log("---------------");
+		console.log(`req.subdomains:`);
+		console.log(req.subdomains);
+
+
+		switch (req.baseUrl) {
+			case "/api/v1/3":
+				console.log("API v1.3");
+				break;
+		}
+
+
+
 
 		await wait(500);
 
@@ -100,5 +129,10 @@ const app = express();
 		});
 	});
 
-	
+	const server = app.listen(port, () => {
+		console.log("El servidor está inicializado en el puerto " + port);
+	});
+
+	KeyB.onClose(async () => server.close());
+	KeyB.bucle(comandos);
 })();
