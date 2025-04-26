@@ -79,11 +79,12 @@ const app = express();
 	//app.use(bodyParser.urlencoded());
 	//app.use(bodyParser.urlencoded({ extended: false }));
 	app.use(express.json());
+	app.use(express.static("static"));
 	app.use(express.urlencoded({ extended: false }));
 	app.use('*', async function (req, res) {
 		console.log("======================================================================");
 		console.log("======================================================================");
-		console.log("req.ip: "+req.ip.substring(req.ip.lastIndexOf(":")+1));
+		console.log(`req.ip: ${req.ip.substring(req.ip.lastIndexOf(":")+1)}`);
 		console.log(`req.originalUrl: ${req.originalUrl}`);
 		console.log(`req.hostname: ${req.hostname}`);
 		console.log(`req.path: ${req.path}`);
